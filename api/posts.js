@@ -40,7 +40,7 @@ router.get("/", authMiddleware, async (req, res) => {
   console.log('pageNumber--->>' , pageNumber)
 
   const number = Number(pageNumber);
-  const size = 8;
+  const size = 3;
 
   try {
     let posts;
