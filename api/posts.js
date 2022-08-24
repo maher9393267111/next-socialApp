@@ -35,7 +35,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
 // GET ALL POSTS
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", async (req, res) => {
   const { pageNumber = 1 } = req.query;
   console.log('pageNumber--->>' , pageNumber)
 
