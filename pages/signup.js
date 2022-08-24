@@ -8,7 +8,7 @@ import baseUrl from "../utils/baseUrl";
 
 
 import uploadPic from "../utils/uploadPicToCloudinary";
-import {registerUser} from "../utils/authuser.js";
+import {registerUser} from "../utils/Auth.js";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
