@@ -1,1 +1,1 @@
-server-sjon-react
+web: node server.js
