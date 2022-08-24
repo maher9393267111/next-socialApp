@@ -6,10 +6,11 @@ import cookie from "js-cookie";
 
 export const registerUser = async (user, profilePicUrl, setError, setLoading) => {
   try {
-    console.log('Registerrrr 🆗️🆗️🆗️----->')
+   
     const res = await axios.post(`${baseUrl}/api/signup`, { user, profilePicUrl });
 
     setToken(res.data);
+    console.log('Registerrrr 🆗️🆗️🆗️----->' ,)
   } catch (error) {
     const errorMsg = catchErrors(error);
     setError(errorMsg);
@@ -32,5 +33,17 @@ export const loginUser = async (user, setError, setLoading) => {
 
 const setToken = token => {
   cookie.set("token", token);
+ 
   Router.push("/");
+};
+
+
+// redirect and protect page if user not auth
+export const redirectUser = (ctx, location) => {
+  if (ctx.req) {
+    ctx.res.writeHead(302, { Location: location });
+    ctx.res.end();
+  } else {
+    window.location.href = location;
+  }
 };

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-
+import {authPage} from '../utils/authPage'
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -18,3 +18,16 @@ export default function Home() {
     </div>
   )
 }
+
+
+
+// export async function getServerSideProps(ctx) {
+//   const { token } = await authPage(ctx);
+//    console.log('token in Server side in Dashboard',token);
+
+//   return {
+//     props: {
+//       token,
+//     },
+//   };
+// }
