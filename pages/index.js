@@ -58,7 +58,7 @@ console.log('ALLPOsts---->' , postsData)
     try {
 
       const token = cookie.get('token')
-      const res = await axios.get(`${server}/api/posts`, {
+      const res = await axios.get(`${baseUrl}/api/posts`, {
      //   headers: { Authorization: cookie.get("token") },
      headers: {
       Authorization: `Bearer ${cookie.get("token")}`,
@@ -109,7 +109,7 @@ Index.getInitialProps = async ctx => {
     const { token } = parseCookies(ctx);
     console.log('Token in Home Page 🧪🧪🧪' , token)
 
-    const res = await axios.get(`${server}/api/posts`, {
+    const res = await axios.get(`${baseUrl}/api/posts`, {
    //   headers: { Authorization: token },
    headers: {
     Authorization: `Bearer ${token}`,
