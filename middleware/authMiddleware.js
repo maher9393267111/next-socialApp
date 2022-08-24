@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 module.exports = (req, res, next) => {
   try {
     if (!req.headers.authorization) {
-      return res.status(401).send(`No Autorizado`);
+      return res.status(401).send(`No Authorization`);
     }
 
     const { userId } = jwt.verify(req.headers.authorization, process.env.jwtSecret);

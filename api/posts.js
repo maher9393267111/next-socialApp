@@ -36,7 +36,8 @@ router.post("/", authMiddleware, async (req, res) => {
 // GET ALL POSTS
 
 router.get("/", authMiddleware, async (req, res) => {
-  const { pageNumber } = req.query;
+  const { pageNumber = 1 } = req.query;
+  console.log('pageNumber--->>' , pageNumber)
 
   const number = Number(pageNumber);
   const size = 8;
@@ -103,6 +104,8 @@ router.delete("/:postId", authMiddleware, async (req, res) => {
 
     const user = await UserModel.findById(userId);
 
+
+    // if not owner user and root{admin}  he can  delete post else throw error
     if (post.user.toString() !== userId) {
       if (user.role === "root") {
         await post.remove();
@@ -111,7 +114,7 @@ router.delete("/:postId", authMiddleware, async (req, res) => {
         return res.status(401).send("Unauthorized");
       }
     }
-
+// owner user can delete -->
     await post.remove();
     return res.status(200).send("Post deleted Successfully");
   } catch (error) {

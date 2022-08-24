@@ -55,7 +55,7 @@ function SearchComponent() {
       resultRenderer={ResultRenderer}
       results={results?.length !== 0  && results}
       onSearchChange={handleChange}
-      minCharacters={1}
+      minCharacters={2}
       onResultSelect={(e, data) => Router.push(`/${data.result.username}`)}
     />
   );
