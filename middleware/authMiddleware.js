@@ -5,8 +5,12 @@ module.exports = (req, res, next) => {
     if (!req.headers.authorization) {
       return res.status(401).send(`No Authorization`);
     }
-
-    const { userId } = jwt.verify(req.headers.authorization, process.env.jwtSecret);
+   // const { Authorization } = req.headers;
+   // const token = Authorization.slice(7, Authorization.length);
+  const token = req.headers.authorization.split(' ').pop()
+  .trim();
+    console.log('token 💠💠💠🧺🧺🧺🧺' , token)
+    const { userId } = jwt.verify(token, process.env.jwtSecret);
 
     req.userId = userId;
     next();

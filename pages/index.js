@@ -31,8 +31,12 @@ console.log('ALLPOsts---->' , postsData)
 
   const fetchDataOnScroll = async () => {
     try {
+      const token = cookie.get('token')
       const res = await axios.get(`${baseUrl}/api/posts`, {
-        headers: { Authorization: cookie.get("token") },
+     //   headers: { Authorization: cookie.get("token") },
+     headers: {
+      Authorization: `Bearer ${token}`,
+    },
         params: { pageNumber }
       });
 
@@ -79,7 +83,11 @@ Index.getInitialProps = async ctx => {
     const { token } = parseCookies(ctx);
 
     const res = await axios.get(`${baseUrl}/api/posts`, {
-      headers: { Authorization: token },
+   //   headers: { Authorization: token },
+   headers: {
+    Authorization: `Bearer ${token}`,
+  },
+
       params: { pageNumber: 1 }
     });
 
