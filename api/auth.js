@@ -49,7 +49,9 @@ router.post("/", async (req, res) => {
 router.get("/", authMiddleware, async (req, res) => {
   const { userId } = req;
   let { getFollowingData } = req.query;
+  console.log('params---->' , getFollowingData)
   getFollowingData = JSON.parse(getFollowingData);
+  
 
   try {
     const user = await UserModel.findById(userId);

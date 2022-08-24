@@ -59,7 +59,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
    //   console.log('res user data 🌟🌟🌟🌟' , res)
 
       const { user, userFollowStats } = res.data;
-console.log('userData--->' , user)
+//console.log('userData--->' , user)
       if (user) !protectedRoutes && redirectUser(ctx, "/");
 
       pageProps.user = user;
