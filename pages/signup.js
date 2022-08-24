@@ -10,6 +10,7 @@ import uploadPic from "../utils/uploadPicToCloudinary";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
+
 function Signup() {
   const [user, setUser] = useState({
     name: "",
