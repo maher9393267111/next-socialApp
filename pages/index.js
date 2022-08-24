@@ -10,8 +10,9 @@ import { PostDeleteToastr } from "../components/Layout/Toastr";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PlaceHolderPosts, EndMessage } from "../components/Layout/PlaceHolderGroup";
 import cookie from "js-cookie";
+import {server} from '../utils/serverUrl'
 
-function Index({ user, postsData, errorLoading }) {
+function Index({ user, postsData, errorLoading , token }) {
   const [posts, setPosts] = useState(postsData||[]);
   const [showToastr, setShowToastr] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -29,13 +30,38 @@ console.log('ALLPOsts---->' , postsData)
     showToastr && setTimeout(() => setShowToastr(false), 3000);
   }, [showToastr]);
 
+//   useEffect(() => {
+    
+//     fetchposts()
+
+//   }, [posts]);
+
+
+// const  fetchposts = async() =>{
+
+//   const res = await axios.get(`${baseUrl}/api/posts`, {
+//     //   headers: { Authorization: token },
+//     headers: {
+//      Authorization: `Bearer ${token}`,
+//    },
+//    params: { pageNumber: 1 }
+//   })
+
+//   setPosts((prev) => [...prev, res?.data])
+
+// }
+
+
+
+
   const fetchDataOnScroll = async () => {
     try {
+
       const token = cookie.get('token')
-      const res = await axios.get(`${baseUrl}/api/posts`, {
+      const res = await axios.get(`${server}/api/posts`, {
      //   headers: { Authorization: cookie.get("token") },
      headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${cookie.get("token")}`,
     },
         params: { pageNumber }
       });
@@ -81,12 +107,14 @@ console.log('ALLPOsts---->' , postsData)
 Index.getInitialProps = async ctx => {
   try {
     const { token } = parseCookies(ctx);
+    console.log('Token in Home Page 🧪🧪🧪' , token)
 
-    const res = await axios.get(`${baseUrl}/api/posts`, {
+    const res = await axios.get(`${server}/api/posts`, {
    //   headers: { Authorization: token },
    headers: {
     Authorization: `Bearer ${token}`,
   },
+
 
       params: { pageNumber: 1 }
     });

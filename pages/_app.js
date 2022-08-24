@@ -7,6 +7,7 @@ import { redirectUser } from "../utils/Auth";
 import Head from "next/head";
 import {toast} from 'react-toastify'
 import axios from 'axios'
+import {server} from '../utils/serverUrl'
 
 
 function MyApp({ Component, pageProps }) {
@@ -51,9 +52,9 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
       const getFollowingData =
         ctx.pathname === "/notifications" || ctx.pathname === "/[username]";
 
-        
+
       // get auth current suer daata 
-      const res = await axios.get(`${baseUrl}/api/auth`, {
+      const res = await axios.get(`${server}/api/auth`, {
       //  headers: { Authorization: token },
       headers: {
         Authorization: `Bearer ${token}`,
