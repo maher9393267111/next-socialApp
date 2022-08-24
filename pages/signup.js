@@ -5,9 +5,10 @@ import ImageDropDiv from "../components/Common/imageDropDiv";
 import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
-import { registerUser  } from "../utils/authuser";
+
 
 import uploadPic from "../utils/uploadPicToCloudinary";
+import {registerUser} from "../utils/authuser.js";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
