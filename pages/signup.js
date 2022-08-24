@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, Message, Segment, Divider } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
-import ImageDropDiv from "../components/Common/ImageDropDiv";
+import ImageDropDiv from "../components/Common/imageDropDiv";
 import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
