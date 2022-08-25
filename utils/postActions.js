@@ -5,7 +5,7 @@ import cookie from "js-cookie";
 
 const Axios = axios.create({
   baseURL: `${baseUrl}/api/posts`,
-  headers: { Authorization: cookie.get("token") }
+  headers: { Authorization: `Bearer ${cookie.get("token")}` }
 });
 
 export const submitNewPost = async (

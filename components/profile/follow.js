@@ -17,7 +17,7 @@ function Followers({ user, loggedUserFollowStats, setUserFollowStats, profileUse
       setLoading(true);
       try {
         const res = await axios.get(`${baseUrl}/api/profile/followers/${profileUserId}`, {
-          headers: { Authorization: cookie.get("token") }
+          headers: { Authorization: `Bearer ${cookie.get("token")}` }
         });
 
         setFollowers(res.data);

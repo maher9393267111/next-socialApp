@@ -15,23 +15,9 @@ app.use(cors())
 const PORT = process.env.PORT || 3000;
 
 
-const robotsOptions = {
-  root: __dirname + '/public/static/',
-  headers: {
-    'Content-Type': 'text/plain;charset=UTF-8'
-  }
-}
 
-const sitemapOptions = {
-  root: __dirname + '/public/static/',
-  headers: {
-    'Content-Type': 'text/xml;charset=UTF-8'
-  }
-}
 
-const faviconOptions = {
-  root: __dirname + '/public/static/'
-}
+
 
 
 

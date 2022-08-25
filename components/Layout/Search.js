@@ -22,7 +22,7 @@ function SearchComponent() {
       const token = cookie.get("token");
 
       const res = await axios.get(`${baseUrl}/api/search/${value}`, {
-        headers: { Authorization: token },
+        headers: { Authorization: `Bearer ${token}` },
         cancelToken: new CancelToken(canceler => {
           cancel = canceler;
         })
