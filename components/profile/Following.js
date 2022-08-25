@@ -7,7 +7,7 @@ import axios from "axios";
 import baseUrl from "../../utils/baseUrl";
 import cookie from "js-cookie";
 
-export default ({ user, loggedUserFollowStats, setUserFollowStats, profileUserId }) => {
+function Following({ user, loggedUserFollowStats, setUserFollowStats, profileUserId }) {
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
@@ -80,3 +80,6 @@ export default ({ user, loggedUserFollowStats, setUserFollowStats, profileUserId
     </>
   );
 };
+
+
+export default Followers
