@@ -21,7 +21,8 @@ export const registerUser = async (user, profilePicUrl, setError, setLoading) =>
 export const loginUser = async (user, setError, setLoading) => {
   setLoading(true);
   try {
-    const res = await axios.post(`${baseUrl}/api/auth`, { user });
+    // ${baseUrl}
+    const res = await axios.post(`/api/auth`, { user });
 
     setToken(res.data);
   } catch (error) {
