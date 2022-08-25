@@ -10,7 +10,7 @@ import cookie from "js-cookie";
 import { PlaceHolderPosts } from "../components/Layout/PlaceHolderGroup";
 import ProfileMenuTabs from "../components/profile/MenuTabs";
 import ProfileHeader from "../components/profile/header";
-import Followers from "../components/profile/followers";
+import Followers from "../components/profile/followers.js";
 import Following from "../components/profile/following";
 import UpdateProfile from "../components/profile/update";
 import Settings from "../components/profile/settings";
