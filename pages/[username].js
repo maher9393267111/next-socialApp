@@ -10,10 +10,10 @@ import cookie from "js-cookie";
 import { PlaceHolderPosts } from "../components/Layout/PlaceHolderGroup";
 import ProfileMenuTabs from "../components/profile/MenuTabs";
 import ProfileHeader from "../components/profile/header";
-import Followers from "../components/profile/followers.js";
-import Following from "../components/profile/following";
+import Followers from "../components/profile/follow";
+import Following from "../components/profile/followin";
 import UpdateProfile from "../components/profile/update";
-import Settings from "../components/profile/settings";
+import Settings from "../components/profile/setting";
 import { PostDeleteToastr } from "../components/Layout/Toastr";
 
 function ProfilePage({
