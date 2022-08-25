@@ -22,7 +22,7 @@ export const loginUser = async (user, setError, setLoading) => {
   setLoading(true);
   try {
     // ${baseUrl}
-    const res = await axios.post(`/api/auth`, { user });
+    const res = await axios.post(`${baseUrl}/api/auth`, { user });
 
     setToken(res.data);
   } catch (error) {
