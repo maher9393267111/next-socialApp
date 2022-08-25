@@ -82,4 +82,4 @@ function Following({ user, loggedUserFollowStats, setUserFollowStats, profileUse
 };
 
 
-export default Followers
+export default Following

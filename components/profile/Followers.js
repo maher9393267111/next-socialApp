@@ -81,4 +81,4 @@ function Followers({ user, loggedUserFollowStats, setUserFollowStats, profileUse
   );
 };
 
-export default Followers
+export default Followers;

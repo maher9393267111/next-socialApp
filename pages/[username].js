@@ -22,7 +22,8 @@ function ProfilePage({
   followersLength,
   followingLength,
   user,
-  userFollowStats
+  userFollowStats,
+  username
 }) {
   const router = useRouter();
 
@@ -44,9 +45,9 @@ function ProfilePage({
       setLoading(true);
 
       try {
-        const { username } = router.query;
+        
         const res = await axios.get(`${baseUrl}/api/profile/posts/${username}`, {
-          headers: { Authorization: cookie.get("token") }
+          headers: { Authorization: `Bearer ${cookie.get("token")}` }
         });
 
         setPosts(res.data);
@@ -57,7 +58,7 @@ function ProfilePage({
       setLoading(false);
     };
     getPosts();
-  }, [router.query.username]);
+  }, [username]);
 
   useEffect(() => {
     showToastr && setTimeout(() => setShowToastr(false), 4000);
