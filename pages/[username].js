@@ -153,7 +153,7 @@ export const getServerSideProps = async ctx => {
     const username = ctx.params.username;
       const { token } = parseCookies(ctx);
 
-    const res = await axios.get(`${server}/api/profile/${username}`, {
+    const res = await axios.get(`${baseUrl}/api/profile/${username}`, {
     
       headers: { authorization: `Bearer ${token}` }
     });
