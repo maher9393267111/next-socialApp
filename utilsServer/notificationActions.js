@@ -166,6 +166,7 @@ const removeFollowerNotification = async (userId, userToNotifyId) => {
   try {
     await NotificationModel.findOneAndUpdate(
       { user: userToNotifyId },
+      // remove object from notifications array  where type and userId
       { $pull: { notifications: { type: "newFollower", user: userId } } }
     );
 

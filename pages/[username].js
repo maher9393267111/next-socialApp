@@ -8,12 +8,12 @@ import { NoProfilePosts, NoProfile } from "../components/Layout/NoData";
 import CardPost from "../components/Post/CardPost";
 import cookie from "js-cookie";
 import { PlaceHolderPosts } from "../components/Layout/PlaceHolderGroup";
-import ProfileMenuTabs from "../components/Profile/MenuTabs";
-import ProfileHeader from "../components/Profile/header";
-import Followers from "../components/Profile/followers";
-import Following from "../components/Profile/following";
-import UpdateProfile from "../components/Profile/update";
-import Settings from "../components/Profile/settings";
+import ProfileMenuTabs from "../components/profile/MenuTabs";
+import ProfileHeader from "../components/profile/header";
+import Followers from "../components/profile/followers";
+import Following from "../components/profile/following";
+import UpdateProfile from "../components/profile/update";
+import Settings from "../components/profile/settings";
 import { PostDeleteToastr } from "../components/Layout/Toastr";
 
 function ProfilePage({
