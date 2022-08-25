@@ -6,6 +6,10 @@ const PostModel = require("../models/PostModel");
 const FollowerModel = require("../models/FollowerModel");
 const ProfileModel = require("../models/ProfileModel");
 const bcrypt = require("bcryptjs");
+const {
+  newFollowerNotification,
+  removeFollowerNotification
+} = require("../utilsServer/notificationActions");
 
 // GET PROFILE INFO
 router.get("/:username", authMiddleware, async (req, res) => {
@@ -108,6 +112,8 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
       return res.status(401).send("User Already Followed");
     }
 
+    await newFollowerNotification(userId, userToFollowId);
+
     await user.following.unshift({ user: userToFollowId });
     await user.save();
 
@@ -159,8 +165,11 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
       .map(follower => follower.user.toString())
       .indexOf(userId);
 
+     
+
     await userToUnfollow.followers.splice(removeFollower, 1);
     await userToUnfollow.save();
+    await removeFollowerNotification(userId, userToUnfollowId);
 
     return res.status(200).send("Updated");
   } catch (error) {
