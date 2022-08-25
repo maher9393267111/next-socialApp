@@ -17,7 +17,7 @@ export const NoFollowData = ({
       <Message
         icon="user outline"
         info
-        content={`${profileName.split(" ")[0] + " does not have followers"}`}
+        content={`User  " does not have followers"}`}
       />
     )}
 
@@ -25,7 +25,7 @@ export const NoFollowData = ({
       <Message
         icon="user outline"
         info
-        content={`${profileName.split(" ")[0] + " does not follow any users"}`}
+        content={`User  " does not follow any users"}`}
       />
     )}
   </>

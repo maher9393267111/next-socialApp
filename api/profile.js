@@ -6,10 +6,6 @@ const PostModel = require("../models/PostModel");
 const FollowerModel = require("../models/FollowerModel");
 const ProfileModel = require("../models/ProfileModel");
 const bcrypt = require("bcryptjs");
-// const {
-//   newFollowerNotification,
-//   removeFollowerNotification
-// } = require("../utilsServer/notificationActions");
 
 // GET PROFILE INFO
 router.get("/:username", authMiddleware, async (req, res) => {
@@ -18,41 +14,22 @@ router.get("/:username", authMiddleware, async (req, res) => {
 
     const user = await UserModel.findOne({ username: username.toLowerCase() });
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).send("No User Found");
     }
 
     const profile = await ProfileModel.findOne({ user: user._id }).populate("user");
 
-    const profileFollowStats = await FollowerModel.aggregate([
-      { $match: { user: user._id } },
-      {
-        $project: {
-          numberOfFollowers: {
-            $cond: {
-              if: { $isArray: "$followers" },
-              then: { $size: "$followers" },
-              else: "NA"
-            }
-          },
-
-          numberOfFollowing: {
-            $cond: {
-              if: { $isArray: "$following" },
-              then: { $size: "$following" },
-              else: "NA"
-            }
-          }
-        }
-      }
-    ]);
+    const profileFollowStats = await FollowerModel.findOne({ user: user._id });
 
     return res.json({
       profile,
-      followersLength: profileFollowStats[0].numberOfFollowers,
-      followingLength: profileFollowStats[0].numberOfFollowing
-    });
 
-  
+      followersLength:
+        profileFollowStats.followers.length > 0 ? profileFollowStats.followers.length : 0,
+
+      followingLength:
+        profileFollowStats.following.length > 0 ? profileFollowStats.following.length : 0
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -86,9 +63,7 @@ router.get("/followers/:userId", authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await FollowerModel.findOne({ user: userId }).populate(
-      "followers.user"
-    );
+    const user = await FollowerModel.findOne({ user: userId }).populate("followers.user");
 
     return res.json(user.followers);
   } catch (error) {
@@ -102,9 +77,7 @@ router.get("/following/:userId", authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await FollowerModel.findOne({ user: userId }).populate(
-      "following.user"
-    );
+    const user = await FollowerModel.findOne({ user: userId }).populate("following.user");
 
     return res.json(user.following);
   } catch (error) {
@@ -123,7 +96,7 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
     const userToFollow = await FollowerModel.findOne({ user: userToFollowId });
 
     if (!user || !userToFollow) {
-      return res.status(404).send("Usuario no encontrado");
+      return res.status(404).send("User not found");
     }
 
     const isFollowing =
@@ -132,7 +105,7 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
         .length > 0;
 
     if (isFollowing) {
-      return res.status(401).send("Usuario ya es seguido");
+      return res.status(401).send("User Already Followed");
     }
 
     await user.following.unshift({ user: userToFollowId });
@@ -141,9 +114,7 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
     await userToFollow.followers.unshift({ user: userId });
     await userToFollow.save();
 
-    await newFollowerNotification(userId, userToFollowId);
-
-    return res.status(200).send("Actualizado");
+    return res.status(200).send("Updated");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -165,17 +136,16 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
     });
 
     if (!user || !userToUnfollow) {
-      return res.status(404).send("Usuario no encontrado");
+      return res.status(404).send("User not found");
     }
 
     const isFollowing =
       user.following.length > 0 &&
-      user.following.filter(
-        following => following.user.toString() === userToUnfollowId
-      ).length === 0;
+      user.following.filter(following => following.user.toString() === userToUnfollowId)
+        .length === 0;
 
     if (isFollowing) {
-      return res.status(401).send("Usuario no seguido antes");
+      return res.status(401).send("User Not Followed before");
     }
 
     const removeFollowing = await user.following
@@ -192,9 +162,7 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
     await userToUnfollow.followers.splice(removeFollower, 1);
     await userToUnfollow.save();
 
-    await removeFollowerNotification(userId, userToUnfollowId);
-
-    return res.status(200).send("Actualizado");
+    return res.status(200).send("Updated");
   } catch (error) {
     console.error(error);
     res.status(500).send("server error");
@@ -235,7 +203,7 @@ router.post("/update", authMiddleware, async (req, res) => {
       await user.save();
     }
 
-    return res.status(200).send("Exito");
+    return res.status(200).send("Success");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -248,7 +216,7 @@ router.post("/settings/password", authMiddleware, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (newPassword.length < 6) {
-      return res.status(400).send("La contraseña debe tener al menos 6 caracteres");
+      return res.status(400).send("Password must be atleast 6 characters");
     }
 
     const user = await UserModel.findById(req.userId).select("+password");
@@ -256,13 +224,13 @@ router.post("/settings/password", authMiddleware, async (req, res) => {
     const isPassword = await bcrypt.compare(currentPassword, user.password);
 
     if (!isPassword) {
-      return res.status(401).send("Credenciales Invalidas");
+      return res.status(401).send("Invalid Password");
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    res.status(200).send("Actualizado correctamente");
+    res.status(200).send("Updated successfully");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -283,7 +251,7 @@ router.post("/settings/messagePopup", authMiddleware, async (req, res) => {
     }
 
     await user.save();
-    return res.status(200).send("actualizado");
+    return res.status(200).send("updated");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -291,3 +259,5 @@ router.post("/settings/messagePopup", authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
+
