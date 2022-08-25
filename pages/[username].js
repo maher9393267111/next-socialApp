@@ -38,7 +38,7 @@ function ProfilePage({
 
   const ownAccount = profile.user._id === user._id;
 
-  if (errorLoading) return <NoProfile />;
+ 
 
   useEffect(() => {
     const getPosts = async () => {
@@ -63,6 +63,9 @@ function ProfilePage({
   useEffect(() => {
     showToastr && setTimeout(() => setShowToastr(false), 4000);
   }, [showToastr]);
+
+
+  if (errorLoading) return <NoProfile />;
 
   return (
     <>
@@ -141,22 +144,7 @@ function ProfilePage({
   );
 }
 
-// ProfilePage.getInitialProps = async ctx => {
-//   try {
-//     const { username } = ctx.query;
-//     const { token } = parseCookies(ctx);
 
-//     const res = await axios.get(`${baseUrl}/api/profile/${username}`, {
-//       headers: { Authorization: token }
-//     });
-
-//     const { profile, followersLength, followingLength } = res.data;
-
-//     return { profile, followersLength, followingLength };
-//   } catch (error) {
-//     return { errorLoading: true };
-//   }
-// };
 
 
 export const getServerSideProps = async ctx => {

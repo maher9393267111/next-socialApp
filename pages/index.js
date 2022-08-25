@@ -60,9 +60,9 @@ console.log('ALLPOsts---->' , postsData)
       const token = cookie.get('token')
       const res = await axios.get(`${baseUrl}/api/posts`, {
      //   headers: { Authorization: cookie.get("token") },
-    //  headers: {
-    //   Authorization: `Bearer ${cookie.get("token")}`,
-    // },
+      headers: {
+       Authorization: `Bearer ${cookie.get("token")}`,
+     },
         params: { pageNumber }
       });
 
@@ -104,25 +104,56 @@ console.log('ALLPOsts---->' , postsData)
   );
 }
 
-Index.getInitialProps = async ctx => {
+// Index.getInitialProps = async ctx => {
+//   try {
+//     const { token } = parseCookies(ctx);
+//     console.log('Token in Home Page 🧪🧪🧪' , token)
+
+//     const res = await axios.get(`${baseUrl}/api/posts`, {
+//    //   headers: { Authorization: token },
+//     headers: {
+//      Authorization: `Bearer ${token}`,
+//    },
+
+
+//       params: { pageNumber: 1 }
+//     });
+
+//     return { postsData: res.data };
+//   } catch (error) {
+//     return { errorLoading: true };
+//   }
+// };
+
+
+
+export const getServerSideProps = async ctx => {
   try {
-    const { token } = parseCookies(ctx);
-    console.log('Token in Home Page 🧪🧪🧪' , token)
-
-    const res = await axios.get(`${baseUrl}/api/posts`, {
-   //   headers: { Authorization: token },
-  //  headers: {
-  //   Authorization: `Bearer ${token}`,
-  // },
+ 
+      const { token } = parseCookies(ctx);
 
 
-      params: { pageNumber: 1 }
-    });
+      const res = await axios.get(`${baseUrl}/api/posts`, {
+        //   headers: { Authorization: token },
+         headers: {
+          Authorization: `Bearer ${token}`,
+        },
+     
+     
+           params: { pageNumber: 1 }
+         });
 
-    return { postsData: res.data };
+
+   
+
+         return {props: { postsData: res.data} };
   } catch (error) {
-    return { errorLoading: true };
+    return { props: { errorLoading: true } };
   }
 };
+
+
+
+
 
 export default Index;

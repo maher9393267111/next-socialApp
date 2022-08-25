@@ -35,32 +35,69 @@ router.post("/", authMiddleware, async (req, res) => {
 
 // GET ALL POSTS
 
-router.get("/", async (req, res) => {
-  const { pageNumber = 1 } = req.query;
-  console.log('pageNumber--->>' , pageNumber)
+// GET ALL POSTS
 
-  const number = Number(pageNumber);
-  const size = 3;
+router.get("/", authMiddleware, async (req, res) => {
+  const { pageNumber } = req.query;
 
   try {
-    let posts;
+    const number = Number(pageNumber);
+    const size = 8;
+    const { userId } = req;
+
+    const loggedUser = await FollowerModel.findOne({ user: userId }).select(
+      "-followers"
+    );
+
+    let posts = [];
 
     if (number === 1) {
-      posts = await PostModel.find()
-        .limit(size)
-        .sort({ createdAt: -1 })
-        .populate("user")
-        .populate("comments.user");
+      if (loggedUser.following.length > 0) {
+        posts = await PostModel.find({
+          user: {
+            $in: [userId, ...loggedUser.following.map(following => following.user)]
+          }
+        })
+          .limit(size)
+          .sort({ createdAt: -1 })
+          .populate("user")
+          .populate("comments.user");
+      }
+      //
+      else {
+        posts = await PostModel.find({ user: userId })
+          .limit(size)
+          .sort({ createdAt: -1 })
+          .populate("user")
+          .populate("comments.user");
+      }
     }
+
     //
     else {
       const skips = size * (number - 1);
-      posts = await PostModel.find()
-        .skip(skips)
-        .limit(size)
-        .sort({ createdAt: -1 })
-        .populate("user")
-        .populate("comments.user");
+
+      if (loggedUser.following.length > 0) {
+        posts = await PostModel.find({
+          user: {
+            $in: [userId, ...loggedUser.following.map(following => following.user)]
+          }
+        })
+          .skip(skips)
+          .limit(size)
+          .sort({ createdAt: -1 })
+          .populate("user")
+          .populate("comments.user");
+      }
+      //
+      else {
+        posts = await PostModel.find({ user: userId })
+          .skip(skips)
+          .limit(size)
+          .sort({ createdAt: -1 })
+          .populate("user")
+          .populate("comments.user");
+      }
     }
 
     return res.json(posts);
@@ -69,6 +106,64 @@ router.get("/", async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
+
+// GET POST BY ID
+
+router.get("/:postId", authMiddleware, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.postId)
+      .populate("user")
+      .populate("comments.user");
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    return res.json(post);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(`Server error`);
+  }
+});
+
+
+
+
+// router.get("/", async (req, res) => {
+//   const { pageNumber = 1 } = req.query;
+//   console.log('pageNumber--->>' , pageNumber)
+
+//   // number is meaning currentPage number
+//   const number = Number(pageNumber);
+//   const size = 3;
+
+//   try {
+//     let posts;
+
+//     if (number === 1) {
+//       posts = await PostModel.find()
+//         .limit(size)
+//         .sort({ createdAt: -1 })
+//         .populate("user")
+//         .populate("comments.user");
+//     }
+//     //
+//     else {
+//       const skips = size * (number - 1);
+//       posts = await PostModel.find()
+//         .skip(skips)
+//         .limit(size)
+//         .sort({ createdAt: -1 })
+//         .populate("user")
+//         .populate("comments.user");
+//     }
+
+//     return res.json(posts);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).send(`Server error`);
+//   }
+// });
 
 // GET POST BY ID
 
