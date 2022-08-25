@@ -74,7 +74,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
           )}
 
           <Card.Content>
-            <Image floated="left" src={post.user.profilePicUrl} avatar circular />
+            <Image floated="left" src={post?.user?.profilePicUrl} avatar circular />
 
             {(user.role === "root" || post.user._id === user._id) && (
               <>

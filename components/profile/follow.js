@@ -66,7 +66,7 @@ function Followers({ user, loggedUserFollowStats, setUserFollowStats, profileUse
                     />
                   )}
                 </List.Content>
-                <Image avatar src={profileFollower.user.profilePicUrl} />
+                <Image avatar src={profileFollower?.user?.profilePicUrl} />
                 <List.Content as="a" href={`/${profileFollower.user.username}`}>
                   {profileFollower.user.name}
                 </List.Content>

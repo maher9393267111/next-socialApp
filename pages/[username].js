@@ -15,6 +15,7 @@ import Following from "../components/profile/followin";
 import UpdateProfile from "../components/profile/update";
 import Settings from "../components/profile/setting";
 import { PostDeleteToastr } from "../components/Layout/Toastr";
+import {server} from '../utils/serverUrl'
 
 function ProfilePage({
   errorLoading,
@@ -152,7 +153,7 @@ export const getServerSideProps = async ctx => {
     const username = ctx.params.username;
       const { token } = parseCookies(ctx);
 
-    const res = await axios.get(`${baseUrl}/api/profile/${username}`, {
+    const res = await axios.get(`${server}/api/profile/${username}`, {
     
       headers: { authorization: `Bearer ${token}` }
     });

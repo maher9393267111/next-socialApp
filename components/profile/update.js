@@ -7,7 +7,7 @@ import { profileUpdate } from "../../utils/profileActions";
 
 function UpdateProfile({ Profile }) {
   const [profile, setProfile] = useState({
-    profilePicUrl: Profile.user.profilePicUrl,
+    profilePicUrl: Profile?.user?.profilePicUrl,
     bio: Profile.bio || "",
     facebook: (Profile.social && Profile.social.facebook) || "",
     youtube: (Profile.social && Profile.social.youtube) || "",

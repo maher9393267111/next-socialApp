@@ -10,7 +10,7 @@ function PostComments({ comment, user, setComments, postId }) {
     <>
       <Comment.Group>
         <Comment>
-          <Comment.Avatar src={comment.user.profilePicUrl} />
+          <Comment.Avatar src={comment?.user?.profilePicUrl} />
           <Comment.Content>
             <Comment.Author as="a" href={`/${comment.user.username}`}>
               {comment.user.name}

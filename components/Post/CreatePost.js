@@ -73,7 +73,7 @@ function CreatePost({ user, setPosts }) {
         />
 
         <Form.Group>
-          <Image src={user.profilePicUrl} circular avatar inline />
+          <Image src={user?.profilePicUrl} circular avatar inline />
           <Form.TextArea
             placeholder="Whats Happening"
             name="text"

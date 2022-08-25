@@ -19,7 +19,7 @@ function NoImageModal({
   return (
     <Card fluid>
       <Card.Content>
-        <Image floated="left" avatar src={post.user.profilePicUrl} />
+        <Image floated="left" avatar src={post?.user?.profilePicUrl} />
 
         <Card.Header>
           <Link href={`/${post.user.username}`}>
