@@ -54,7 +54,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
 
 
       // get auth current suer daata 
-      const res = await axios.get(`${baseUrl}/api/auth`, {
+      const res = await axios.get(`${server}/api/auth`, {
       //  headers: { Authorization: token },
       headers: {
         Authorization: `Bearer ${token}`,
