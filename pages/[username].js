@@ -15,7 +15,7 @@ import Following from "../components/profile/followin";
 import UpdateProfile from "../components/profile/update";
 import Settings from "../components/profile/setting";
 import { PostDeleteToastr } from "../components/Layout/Toastr";
-import {server} from '../utils/serverUrl'
+//import {server} from '../utils/serverUrl'
 
 function ProfilePage({
   errorLoading,
@@ -37,7 +37,8 @@ function ProfilePage({
 
   const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
 
-  const ownAccount = profile.user._id === user._id;
+  const ownAccount = profile?.user?._id === user?._id;
+  console.log('profile info ---->>' , profile)
 
  
 

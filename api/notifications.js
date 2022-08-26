@@ -19,6 +19,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
+
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { userId } = req;

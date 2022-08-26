@@ -119,6 +119,7 @@ const removeCommentNotification = async (postId, commentId, userId, userToNotify
         }
       }
     );
+    
 
     // const user = await NotificationModel.findOne({ user: userToNotifyId });
     // const notificationToRemove = await user.notifications.find(

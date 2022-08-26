@@ -5,6 +5,7 @@ const loadMessages = async (userId, messagesWith) => {
   try {
     const user = await ChatModel.findOne({ user: userId }).populate("chats.messagesWith");
 
+    // fin current user with message to chat by filter
     const chat = user.chats.find(
       chat => chat.messagesWith._id.toString() === messagesWith
     );

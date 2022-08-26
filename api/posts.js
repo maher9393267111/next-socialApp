@@ -5,6 +5,12 @@ const UserModel = require("../models/UserModel");
 const PostModel = require("../models/PostModel");
 const FollowerModel = require("../models/FollowerModel");
 const uuid = require("uuid").v4;
+const {
+  newLikeNotification,
+  removeLikeNotification,
+  newCommentNotification,
+  removeCommentNotification
+} = require("../utilsServer/notificationActions");
 
 // CREATE A POST
 
@@ -236,6 +242,12 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
     if (isLiked) {
       return res.status(401).send("Post already liked");
     }
+    
+    const postByUserId = post.user.toString();
+
+    if (postByUserId !== userId) {
+      await newLikeNotification(userId, postId, postByUserId);
+    }
 
     await post.likes.unshift({ user: userId });
     await post.save();
@@ -243,7 +255,7 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
     return res.status(200).send("Post liked");
   } catch (error) {
     console.error(error);
-    return res.status(500).send(`Server error`);
+    return res.status(500).send(error);
   }
 });
 
@@ -268,6 +280,13 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
 
     const index = post.likes.map(like => like.user.toString()).indexOf(userId);
 
+
+    const postByUserId = post.user.toString();
+
+    if (postByUserId !== userId) {
+      await removeLikeNotification(userId, postId, postByUserId);
+    }
+
     await post.likes.splice(index, 1);
 
     await post.save();
@@ -275,7 +294,7 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
     return res.status(200).send("Post Unliked");
   } catch (error) {
     console.error(error);
-    return res.status(500).send(`Server error`);
+    return res.status(500).send(error);
   }
 });
 
@@ -293,7 +312,7 @@ router.get("/like/:postId", authMiddleware, async (req, res) => {
     return res.status(200).json(post.likes);
   } catch (error) {
     console.error(error);
-    return res.status(500).send(`Server error`);
+    return res.status(500).send(error);
   }
 });
 
@@ -304,6 +323,7 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
     const { postId } = req.params;
 
     const { text } = req.body;
+    const {userId} = req
 
     if (text.length < 1)
       return res.status(401).send("Comment should be atleast 1 character");
@@ -321,6 +341,12 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
 
     await post.comments.unshift(newComment);
     await post.save();
+
+    const postByUserId = post.user.toString();
+    if (postByUserId !== userId) {
+      await newCommentNotification(postId, newComment._id, userId, postByUserId, text);
+    }
+
 
     return res.status(200).json(newComment._id);
   } catch (error) {
@@ -353,9 +379,14 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 
       await post.save();
 
+
+
       return res.status(200).send("Deleted Successfully");
     };
 
+    if (postByUserId !== userId) {
+      await removeCommentNotification(postId, commentId, userId, postByUserId);
+    }
     
     if (comment.user.toString() !== userId) {
       if (user.role === "root") {
